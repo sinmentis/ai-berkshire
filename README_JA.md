@@ -2,6 +2,8 @@
 
 > 日本語版はコミュニティによりメンテナンスされています。内容が最新でない場合は、中文版・英語版を正としてください。
 
+> 🍴 **これはフォークです**：[xbtlin/ai-berkshire](https://github.com/xbtlin/ai-berkshire) からフォークしました。このフォークでの変更点：`skills/*.md` をすべて agent 中立な動作記述に書き換え（Claude Code 専用の `TeamCreate`/`SendMessage`/`TeamDelete` などのツール呼び出しを廃止）、**GitHub Copilot CLI** でも正しく実行できるようにしました（Claude Code / Codex との互換性はそのまま維持）。Copilot CLI 向けのツール対応表をまとめた `COPILOT.md` を追加しています。詳細は [`docs/superpowers/specs/`](docs/superpowers/specs/) の設計ドキュメントと [`docs/superpowers/plans/`](docs/superpowers/plans/) の実装計画をご覧ください。
+
 [![GitHub Trending](https://trendshift.io/api/badge/repositories/63696)](https://trendshift.io/repositories/63696)
 
 # AI Berkshire — AI時代のバリュー投資リサーチフレームワーク
@@ -10,9 +12,9 @@
 >
 > AIでリサーチの深度と効率を再定義する。
 
-**AI Berkshire** は、Claude CodeおよびCodexに対応した投資リサーチSkillのコレクションです。バフェット・マンガー・段永平（ダン・ヨンピン）・李録（リ・ルー）という4人のバリュー投資の巨人の方法論を体系化し、AIエージェントによりプロフェッショナル水準のリサーチを提供します。
+**AI Berkshire** は、Claude Code、Codex、GitHub Copilot CLIに対応した投資リサーチSkillのコレクションです。バフェット・マンガー・段永平（ダン・ヨンピン）・李録（リ・ルー）という4人のバリュー投資の巨人の方法論を体系化し、AIエージェントによりプロフェッショナル水準のリサーチを提供します。
 
-1人 + Claude Code / Codex = 投資リサーチチーム丸ごと。
+1人 + Claude Code / Codex / Copilot CLI = 投資リサーチチーム丸ごと。
 
 [実績](#実績) · [なぜAIに直接聞いてはいけないのか](#なぜaiに直接聞いてはいけないのか) · [Skill一覧](#skill一覧19スキル) · [クイックスタート](#クイックスタート) · [レポート](#実際のリサーチレポート) · [設計思想](#設計思想)
 
@@ -224,7 +226,7 @@ AIに直接聞けばコンテキストウィンドウは1つです。4つの並�
 
 ### 1. AIクライアントのインストール
 
-このリポジトリは1つの標準ワークフローを維持し、Claude Codeコマンドと Codex skillの両方を提供します。使用するクライアントをインストールしてください。
+このリポジトリは1つの agent 中立な標準ワークフローを維持し、Claude Codeコマンド、Codex skill、そして skills.sh エコシステム経由でGitHub Copilot CLIなど対応する汎用agent向けにインストール可能なパッケージを提供します。使用するクライアントをインストールしてください。
 
 Claude Codeユーザーの場合：
 
@@ -311,7 +313,18 @@ REM オプション：Codexスラッシュプロンプトをインストール
 .\scripts\install-codex-prompts.bat
 ```
 
-リポジトリは3つのエントリーポイントを維持しています：`skills/*.md` はClaude Codeコマンドのソース；`codex-skills/*/SKILL.md` は `scripts/sync-codex-skills.py` が `skills/*.md` から生成するCodex skillパッケージ；`codex-prompts/*.md` はオプションのCodexスラッシュプロンプト互換レイヤーです。
+GitHub Copilot CLI ユーザー：
+
+`codex-skills/*/SKILL.md` はディレクトリ名に反して、実際は [skills.sh](https://skills.sh) 標準の汎用skillパッケージ形式です。`npx skills` はCopilot CLIを含む対応agentにこれをインストールします：
+
+```bash
+npx skills add sinmentis/ai-berkshire@investment-team -g -y
+# 他のskill名に置き換え可（下記Skills一覧参照）、または npx skills find で探索
+```
+
+既知の制限：セッション途中でインストールしたskillは、そのCopilot CLIセッション内では即座に認識されません。新しいセッションを開始してください。本リポジトリを直接 `git clone` して、Copilot CLIに `skills/*.md` を読み込ませ、リポジトリ付属の `tools/*.py` を呼び出させる方法もあります——単体のskillパッケージより完全です。詳細は [`COPILOT.md`](COPILOT.md) を参照してください。
+
+リポジトリは3つのエントリーポイントを維持しています：`skills/*.md` はagent中立な標準ワークフローのソースで、Claude Code / Codex / Copilot CLIから直接利用可能；`codex-skills/*/SKILL.md` は `scripts/sync-codex-skills.py` が `skills/*.md` から生成する汎用skillパッケージ；`codex-prompts/*.md` はオプションのCodexスラッシュプロンプト互換レイヤーです。
 
 ### 3. 使い方
 

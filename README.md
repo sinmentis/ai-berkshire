@@ -1,5 +1,7 @@
 中文 | [English](README_EN.md) | [日本語](README_JA.md)
 
+> 🍴 **这是 fork**：本仓库 fork 自 [xbtlin/ai-berkshire](https://github.com/xbtlin/ai-berkshire)。本 fork 的改动：将 `skills/*.md` 全部改写为 agent 中立的动作语言（不再写死 Claude Code 专属的 `TeamCreate`/`SendMessage`/`TeamDelete` 等工具调用），使其能在 **GitHub Copilot CLI** 下也能正确执行，同时保持 Claude Code / Codex 的原有兼容性；新增 `COPILOT.md` 说明 Copilot CLI 的工具映射约定。设计文档见 [`docs/superpowers/specs/`](docs/superpowers/specs/)，实施计划见 [`docs/superpowers/plans/`](docs/superpowers/plans/)。
+
 [![GitHub Trending](https://trendshift.io/api/badge/repositories/63696)](https://trendshift.io/repositories/63696)
 
 # AI Berkshire - AI 时代的价值投资研究框架
@@ -8,9 +10,9 @@
 >
 > 用 AI 重新定义投资研究的深度与效率。
 
-**AI Berkshire** 是一套同时兼容 Claude Code 与 Codex 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
+**AI Berkshire** 是一套同时兼容 Claude Code、Codex 与 GitHub Copilot CLI 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
 
-一个人 + Claude Code / Codex = 一个投研团队。
+一个人 + Claude Code / Codex / Copilot CLI = 一个投研团队。
 
 [实盘业绩](#real-track-record) · [为什么不能直接问AI](#为什么不能直接问-ai) · [Skills 一览](#skills-一览19个) · [快速开始](#快速开始) · [实战报告](#实战研究报告) · [设计理念](#设计理念) · [公众号](#精选研究首发于公众号)
 
@@ -230,7 +232,7 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 
 ### 1. 安装 AI 客户端
 
-本仓库保留同一套 canonical workflow，并分别提供 Claude Code commands 与 Codex skills。按你使用的客户端安装即可。
+本仓库保留同一套 agent 中立的 canonical workflow，分别提供 Claude Code commands、Codex skills，以及可通过 skills.sh 生态（含 GitHub Copilot CLI 等通用 agent）直接安装的通用 skill 包。按你使用的客户端安装即可。
 
 Claude Code 用户：
 
@@ -317,7 +319,18 @@ REM 可选：安装 Codex slash prompts
 .\scripts\install-codex-prompts.bat
 ```
 
-仓库同时维护三套入口：`skills/*.md` 是 Claude Code command 源文件；`codex-skills/*/SKILL.md` 是 Codex skill 包，由 `scripts/sync-codex-skills.py` 从 `skills/*.md` 生成；`codex-prompts/*.md` 是可选的 Codex slash prompt 兼容层。
+GitHub Copilot CLI 用户：
+
+`codex-skills/*/SKILL.md` 虽然目录名叫 codex-skills，实际是 [skills.sh](https://skills.sh) 标准的通用 skill 包格式，`npx skills` 会把它安装给包括 Copilot CLI 在内的所有兼容 agent：
+
+```bash
+npx skills add sinmentis/ai-berkshire@investment-team -g -y
+# 按需替换成其他 skill 名（见下方 Skills 一览），或用 npx skills find 浏览
+```
+
+已知限制：当前会话内新装的 skill 不会立即被 Copilot CLI 识别，需要开一个新会话。也可以直接 `git clone` 本仓库，cd 进目录后让 Copilot CLI 直接读取 `skills/*.md` 并调用仓库自带的 `tools/*.py`——效果上比单独装的 skill 包更完整。详见 [`COPILOT.md`](COPILOT.md)。
+
+仓库同时维护三套入口：`skills/*.md` 是 agent 中立的 canonical workflow 源文件，Claude Code / Codex / Copilot CLI 均可直接使用；`codex-skills/*/SKILL.md` 是从 `skills/*.md` 生成的通用 skill 包（`scripts/sync-codex-skills.py` 生成）；`codex-prompts/*.md` 是可选的 Codex slash prompt 兼容层。
 
 ### 3. 使用
 

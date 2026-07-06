@@ -1,5 +1,7 @@
 English | [中文](README.md) | [日本語](README_JA.md)
 
+> 🍴 **This is a fork**: forked from [xbtlin/ai-berkshire](https://github.com/xbtlin/ai-berkshire). Changes in this fork: rewrote all `skills/*.md` into agent-neutral action language (no more hardcoded Claude-Code-only tool calls like `TeamCreate`/`SendMessage`/`TeamDelete`), so the skills run correctly under **GitHub Copilot CLI** too, while keeping full Claude Code / Codex compatibility. Added `COPILOT.md` documenting the Copilot CLI tool mapping. See the design doc under [`docs/superpowers/specs/`](docs/superpowers/specs/) and the implementation plan under [`docs/superpowers/plans/`](docs/superpowers/plans/) for details.
+
 [![GitHub Trending](https://trendshift.io/api/badge/repositories/63696)](https://trendshift.io/repositories/63696)
 
 # AI Berkshire — Value Investing Research Framework for the AI Era
@@ -8,9 +10,9 @@ English | [中文](README.md) | [日本語](README_JA.md)
 >
 > Redefining the depth and efficiency of investment research with AI.
 
-**AI Berkshire** is a collection of investment research skills compatible with both Claude Code and Codex. It systematizes the methodologies of four value investing masters — Buffett, Munger, Duan Yongping, and Li Lu — and delivers professional-grade research through AI Agents.
+**AI Berkshire** is a collection of investment research skills compatible with Claude Code, Codex, and GitHub Copilot CLI. It systematizes the methodologies of four value investing masters — Buffett, Munger, Duan Yongping, and Li Lu — and delivers professional-grade research through AI Agents.
 
-One person + Claude Code / Codex = an entire investment research team.
+One person + Claude Code / Codex / Copilot CLI = an entire investment research team.
 
 [Track Record](#real-track-record) · [Why Not Just Ask AI?](#why-cant-you-just-ask-ai-directly) · [Skills](#skills-overview-19-skills) · [Quick Start](#quick-start) · [Reports](#live-research-reports) · [Design Philosophy](#design-philosophy)
 
@@ -222,7 +224,7 @@ To control cost, adjust the workflow before expecting a full deep-research run t
 
 ### 1. Install an AI Client
 
-This repository keeps one canonical workflow and provides Claude Code commands plus Codex skills. Install the client you plan to use.
+This repository keeps one canonical, agent-neutral workflow, and provides Claude Code commands, Codex skills, and — via the skills.sh ecosystem — an installable package for any compatible universal agent, including GitHub Copilot CLI. Install whichever client you plan to use.
 
 For Claude Code users:
 
@@ -309,7 +311,18 @@ REM Optional: install Codex slash prompts
 .\scripts\install-codex-prompts.bat
 ```
 
-The repository maintains three entry points: `skills/*.md` are the Claude Code command sources; `codex-skills/*/SKILL.md` are Codex skill packages generated from `skills/*.md` by `scripts/sync-codex-skills.py`; `codex-prompts/*.md` are an optional Codex slash-prompt compatibility layer.
+GitHub Copilot CLI users:
+
+`codex-skills/*/SKILL.md` is, despite the directory name, the standard [skills.sh](https://skills.sh) universal skill package format — `npx skills` installs it for any compatible agent, including Copilot CLI:
+
+```bash
+npx skills add sinmentis/ai-berkshire@investment-team -g -y
+# swap in another skill name (see Skills Overview below), or browse with npx skills find
+```
+
+Known limitation: a skill installed mid-session isn't picked up by the current Copilot CLI session — start a new one. You can also `git clone` this repo directly and let Copilot CLI read `skills/*.md` and call the repo's own `tools/*.py` — more complete than the standalone package. See [`COPILOT.md`](COPILOT.md) for details.
+
+The repository maintains three entry points: `skills/*.md` is the agent-neutral canonical workflow source, usable directly by Claude Code, Codex, and Copilot CLI; `codex-skills/*/SKILL.md` are universal skill packages generated from `skills/*.md` by `scripts/sync-codex-skills.py`; `codex-prompts/*.md` are an optional Codex slash-prompt compatibility layer.
 
 ### 3. Use
 
