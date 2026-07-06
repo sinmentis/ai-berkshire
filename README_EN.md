@@ -164,7 +164,7 @@ REM Optional: install Codex slash prompts
 `codex-skills/*/SKILL.md` is, despite the directory name, the standard [skills.sh](https://skills.sh) universal skill package format — `npx skills` installs it for any compatible agent, including Copilot CLI:
 
 ```bash
-npx skills add sinmentis/ai-berkshire@investment-team -g -y
+npx skills add sinmentis/ai-berkshire-generic@investment-team -g -y
 # swap in another skill name (see Skills Overview above), or browse with npx skills find
 ```
 

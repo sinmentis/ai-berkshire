@@ -164,7 +164,7 @@ REM 可选：安装 Codex slash prompts
 `codex-skills/*/SKILL.md` 虽然目录名叫 codex-skills，实际是 [skills.sh](https://skills.sh) 标准的通用 skill 包格式，`npx skills` 会把它安装给包括 Copilot CLI 在内的所有兼容 agent：
 
 ```bash
-npx skills add sinmentis/ai-berkshire@investment-team -g -y
+npx skills add sinmentis/ai-berkshire-generic@investment-team -g -y
 # 按需替换成其他 skill 名（见上方 Skills 一览），或用 npx skills find 浏览
 ```
 

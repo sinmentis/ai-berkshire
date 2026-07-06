@@ -166,7 +166,7 @@ REM オプション：Codexスラッシュプロンプトをインストール
 `codex-skills/*/SKILL.md` はディレクトリ名に反して、実際は [skills.sh](https://skills.sh) 標準の汎用skillパッケージ形式です。`npx skills` はCopilot CLIを含む対応agentにこれをインストールします：
 
 ```bash
-npx skills add sinmentis/ai-berkshire@investment-team -g -y
+npx skills add sinmentis/ai-berkshire-generic@investment-team -g -y
 # 他のskill名に置き換え可（上記Skills一覧参照）、または npx skills find で探索
 ```
 
