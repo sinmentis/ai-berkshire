@@ -5,8 +5,13 @@ validation tools. Keep compatibility with both Claude Code and Codex users.
 
 ## Project Layout
 
-- `skills/*.md`: Claude Code slash-command source files.
-- `codex-skills/*/SKILL.md`: Codex skill packages. Most are generated from
+- `skills/*.md`: agent-neutral canonical workflow source. Written in action
+  language (search the web, launch a background sub-task, read/write a
+  file) rather than any single agent's tool names, so Claude Code, Codex,
+  GitHub Copilot CLI, and other tool-capable coding agents can all follow
+  it directly, not only via a generated package.
+- `codex-skills/*/SKILL.md`: universal skill packages (despite the
+  directory name) generated from
   `skills/*.md`; Codex-only hand-written packages are allowed when clearly
   marked and no same-named `skills/*.md` source exists.
 - `codex-prompts/*.md`: generated Codex custom prompts for slash-command
@@ -36,8 +41,8 @@ validation tools. Keep compatibility with both Claude Code and Codex users.
   intentionally adopting the workflow for Claude Code too.
 - Keep tool paths compatible with the documented checkout path:
   `~/ai-berkshire/tools/...`
-- Keep `CLAUDE.md` for Claude Code behavior and this `AGENTS.md` for Codex
-  behavior.
+- Keep `CLAUDE.md` for Claude Code behavior, this `AGENTS.md` for Codex
+  behavior, and `COPILOT.md` for GitHub Copilot CLI behavior.
 
 ## Research Quality Rules
 
