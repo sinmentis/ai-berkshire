@@ -36,7 +36,7 @@ This skill is generated from `skills/earnings-team.md` so Claude Code and Codex 
 
 ### 第一步：获取一手资料
 
-使用 Agent 工具启动后台 Agent **并行**获取以下原始材料：
+启动多个后台子任务，**并行**获取以下原始材料：
 
 | 资料类型 | 获取来源 | 优先级 |
 |---------|---------|--------|
@@ -53,7 +53,7 @@ This skill is generated from `skills/earnings-team.md` so Claude Code and Codex 
 | B级 | 仅获取到部分原文或第三方汇总 | 标注"非原始来源"，降低附注分析权重 |
 | C级 | 仅有新闻报道和数据网站摘要 | 聚焦核心数据变化，跳过附注挖掘，标注"一手资料不足" |
 
-将资料可得性评级告知每个 Agent，影响其分析深度。
+将资料可得性评级告知每个角色，影响其分析深度。
 
 ### 第二步：向用户展示团队框架
 
@@ -69,7 +69,7 @@ This skill is generated from `skills/earnings-team.md` so Claude Code and Codex 
 
 ### 第三步：启动4个并行研究Agent
 
-使用 Agent 工具在**同一条消息**中启动4个后台 Agent。
+在**同一次调用**中一次性并行启动4个后台子任务，不要逐个串行执行。
 
 ---
 
@@ -301,7 +301,7 @@ This skill is generated from `skills/earnings-team.md` so Claude Code and Codex 
 
 ## 阶段三：编辑润色 + 读者评审
 
-研究报告完成后，**并行**启动两个 Agent：
+研究报告完成后，**并行**启动两个后台子任务：
 
 ### Agent 5：编辑（公众号文章改写）
 

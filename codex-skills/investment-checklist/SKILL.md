@@ -43,7 +43,7 @@ This skill is generated from `skills/investment-checklist.md` so Claude Code and
 
 ### 第二步：并行数据收集
 
-使用 Task 工具为**每家公司**启动独立的后台 Agent 进行数据收集（所有公司同时并行启动），每个Agent负责收集：
+为**每家公司**启动独立的后台子任务进行数据收集（所有公司同时并行启动），每个子任务负责收集：
 
 1. **盈利能力**：ROE（5-10年趋势）、毛利率、净利率、自由现金流
 2. **估值数据**：当前股价、市值、PE(TTM)、前瞻PE、PB、股息率

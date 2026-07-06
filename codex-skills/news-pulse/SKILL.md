@@ -51,15 +51,11 @@ This skill is generated from `skills/news-pulse.md` so Claude Code and Codex use
 
 将评级告知每个 Agent，影响其侦察方式。
 
-### 第三步：创建团队
+### 第三步：准备4个侦察任务
 
-使用 TeamCreate 创建团队：
-- `team_name`: `{公司名}-newspulse`（英文小写，如 `pdd-newspulse`）
-- `agent_type`: `team-lead`
+组建一个虚拟侦察团队，为下面4个角色各准备一份独立、完整的任务说明：
 
-### 第四步：创建 4 个侦察任务
-
-使用 TaskCreate 创建以下 4 个任务：
+### 第四步：明确 4 个侦察任务的具体要求
 
 #### 任务 1：公司事件侦察（company-event-scout）
 
@@ -114,13 +110,9 @@ This skill is generated from `skills/news-pulse.md` so Claude Code and Codex use
   6. **技术面信号**：是否触及关键支撑/阻力、是否有大宗交易、融资融券异常
   7. 关键判断：**是基本面驱动还是情绪/资金面驱动？**
 
-### 第五步：并行启动 4 个 Agent
+### 第五步：并行启动 4 个独立侦察子任务
 
-**必须在同一条消息中并行调用 4 次 Task 工具**。每个 Agent 配置：
-- `subagent_type`: `general-purpose`
-- `run_in_background`: `true`
-- `team_name`: `{公司名}-newspulse`
-- `name`: 对应角色名（company-event-scout / regulatory-watcher / industry-peer-analyst / sentiment-tracker）
+**必须在同一次调用中一次性并行派发全部 4 个**后台子任务，不要逐个串行执行。4个角色：company-event-scout / regulatory-watcher / industry-peer-analyst / sentiment-tracker，各自独立侦察、互不感知，完成后把结果直接返回给你（team-lead）。
 
 每个 Agent 的 prompt 模板：
 
@@ -137,8 +129,8 @@ This skill is generated from `skills/news-pulse.md` so Claude Code and Codex use
 {任务description的内容}
 
 **侦察方法**：
-- 优先使用 WebSearch 搜索时效性查询（关键词加日期或"最近"、"latest"、"2026"）
-- 关键事件用 WebFetch 精读原始来源（公告原文、财报、监管文件）
+- 优先联网搜索时效性查询（关键词加日期或"最近"、"latest"、"2026"）
+- 关键事件抓取原始来源全文精读（公告原文、财报、监管文件），不要只看搜索摘要
 - 对每个事件做"独立信源验证"——传言至少要 2 个独立来源
 - **不要被标题党误导**：标题与正文不符的事件要标注"标题误导"
 
@@ -150,16 +142,13 @@ This skill is generated from `skills/news-pulse.md` so Claude Code and Codex use
 4. **数据缺口声明**：哪些信息没找到、哪些有疑点、哪些需要等更多信息
 5. 严格区分"事实"与"推测"，遵循 CLAUDE.md 客观性原则
 
-**完成后**：
-1. 使用 TaskUpdate 将任务标记为 completed
-2. 通过 SendMessage 把完整侦察报告发送给 team-lead（type: "message", recipient: "team-lead"）
+**完成后**：直接将完整侦察报告作为本次任务的最终结果返回，不需要额外的通知或消息步骤。
 ```
 
 ### 第六步：实时跟踪进度
 
 - 每收到一份侦察报告，向用户展示该维度的 3 条核心发现
-- 等待全部 4 份到齐
-- 全部到齐后，通过 SendMessage 向 4 个 Agent 发送 shutdown_request
+- 等待全部 4 份到齐——全部到齐即代表4个子任务都已完成，无需额外通知或关闭操作
 
 ### 第七步：team-lead 综合归因
 
@@ -227,10 +216,6 @@ This skill is generated from `skills/news-pulse.md` so Claude Code and Codex use
 ### 第八步：保存报告
 
 写入 `reports/{公司名}/{公司名}-news-{YYYYMMDD}.md`。如果 `reports/{公司名}/` 目录不存在则创建（说明该公司还没建过任何研究报告）。
-
-### 第九步：清理团队
-
-使用 TeamDelete 清理团队资源。
 
 ## 关键原则
 

@@ -96,7 +96,7 @@ This skill is generated from `skills/industry-research.md` so Claude Code and Co
 
 ## 第三步：全球上市公司扫描
 
-使用 Task 工具启动后台 Agent，全面搜索该行业所有上市公司。
+启动后台子任务，全面搜索该行业所有上市公司。
 
 ### 搜索清单
 - 美股（NYSE/NASDAQ/NYSE American）相关公司

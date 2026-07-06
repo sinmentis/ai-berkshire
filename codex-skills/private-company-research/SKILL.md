@@ -67,15 +67,9 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
 | **tech-ip-analyst** | 技术栈/专利/研发能力/技术护城河 | "技术壁垒是真是假，能撑多久" |
 | **signal-miner** | 替代数据挖掘：招聘/专利/诉讼/App数据/供应链 | "常规信息之外，还有什么蛛丝马迹" |
 
-### 第二步：创建团队
+### 第二步：准备6个研究任务
 
-使用 TeamCreate 创建团队：
-- team_name: `{公司名}-private-research`（英文小写，如 `ant-group-private-research`）
-- agent_type: `team-lead`
-
-### 第三步：创建6个任务
-
-使用 TaskCreate 创建以下6个任务（每个都要有 subject、description、activeForm）：
+组建一个虚拟研究团队，为下面6个角色各准备一份独立、完整的任务说明（每份都要写清楚 subject 和具体要求）：
 
 ---
 
@@ -799,13 +793,9 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
 
 ---
 
-### 第四步：启动6个并行Agent
+### 第三步：并行启动6个独立研究子任务
 
-使用 Agent 工具同时启动6个Agent（**必须在同一条消息中并行调用**）：
-
-每个Agent的配置：
-- `subagent_type`: `general-purpose`
-- `run_in_background`: `true`
+**必须在同一次调用中一次性并行派发全部6个**后台研究子任务，不要逐个串行执行。6个角色各自独立研究、互不感知，完成后把结果直接返回给你（team-lead）。
 
 每个Agent的prompt模板：
 
@@ -824,7 +814,7 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
 {任务description的内容}
 
 **研究方法**：
-1. 使用 WebSearch 搜索最新公开信息，每个维度至少搜索3-5次，用不同关键词组合
+1. 联网搜索最新公开信息，每个维度至少搜索3-5次，用不同关键词组合
 2. 搜索关键词策略：
    - 中文：公司名+收入/估值/融资/用户数/MAU/IPO/招股书/裁员/整改
    - 英文：Company Name + revenue/valuation/funding/users/IPO/filing
@@ -834,7 +824,7 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
    - 高可信度：招股书、监管文件、上市公司年报中的关联披露
    - 中可信度：晚点LatePost、The Information、36氪、Bloomberg、Reuters、TechCrunch
    - 辅助验证：知乎、脉脉、Glassdoor、天眼查、企查查
-4. 使用 WebFetch 获取关键文章的全文（不要只看搜索摘要）
+4. 抓取关键文章的全文精读（不要只看搜索摘要）
 5. 对重要数据，至少用2个不同来源交叉验证
 
 **数据标注规范（严格执行）**：
@@ -856,19 +846,19 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
   4. 最大的信息盲区（什么信息缺失最影响判断）
 ```
 
-### 第五步：接收报告并跟踪进度
+### 第四步：接收报告并跟踪进度
 
-- 向用户实时展示进度表（哪些Agent已完成、哪些仍在研究中）
+- 向用户实时展示进度表（哪些子任务已完成、哪些仍在研究中）
 - 每收到一份报告，更新进度并展示该报告的核心要点（3-5条）
 - 等待全部6份报告到齐
 
-### 第六步：交叉验证与信息拼图
+### 第五步：交叉验证与信息拼图
 
 **这是增强版框架最关键的新增步骤**。在汇总前，team-lead 需要：
 
 1. **数据冲突仲裁**：
-   - 提取各Agent报告中的关键数据
-   - 识别不同Agent引用的相同数据是否一致
+   - 提取各子任务报告中的关键数据
+   - 识别不同子任务引用的相同数据是否一致
    - 对冲突数据进行仲裁：列出所有来源，说明采信哪个、为什么
 
 2. **信号一致性检验**：
@@ -886,7 +876,7 @@ This skill is generated from `skills/private-company-research.md` so Claude Code
    - 检查报告中是否存在"正面信息详细、负面信息简略"的偏差
    - 确认每个正面判断都有对应的反面检验
 
-### 第七步：汇总最终报告
+### 第六步：汇总最终报告
 
 综合6份分析报告，输出以下结构的最终报告：
 
@@ -1060,25 +1050,21 @@ Top 3 核心风险及应对策略
 
 ---
 
-### 第八步：保存报告
+### 第七步：保存报告
 
 将完整最终报告写入 `reports/{公司名}/{公司名}-private-{YYYYMMDD}.md`。
-
-### 第九步：清理团队
-
-使用 TeamDelete 清理团队资源。
 
 ---
 
 ## 重要注意事项
 
-1. **6个Agent必须并行启动**——在同一条消息中调用6次Agent工具
+1. **6个子任务必须并行启动**——在同一次调用中一次性派发全部6个，不要逐个串行执行
 2. **数据置信度标注**——未上市公司数据来源参差不齐，每个关键数据必须标注来源和置信度
 3. **推算要透明**——所有推算过程要展示计算逻辑，不能凭空给数字
 4. **交叉验证**——关键数据至少2个来源交叉验证，来源冲突时都列出
 5. **信号一致性检验**——汇总阶段必须做跨维度的信号一致性检查
 6. **结论要明确**——不回避给出投资/观望/回避建议，但同时说明结论的置信度
-7. **耐心等待**——6个Agent研究需要几分钟，实时向用户更新进度
+7. **耐心等待**——6个子任务研究需要几分钟，实时向用户更新进度
 8. **中英文搜索**——未上市公司信息可能分布在中英文媒体，需要两种语言搜索
 9. **反偏见核心原则**——资料少≠公司不好，AI分析篇幅短≠投资确定性低。对于信息极度稀缺的公司，切换"第一性原理模式"聚焦核心问题，不追求报告形式完整
 10. **诚实留白**——报告中明确区分"有据分析"和"推测填充"，允许出现"此维度数据不足，无法给出有意义的结论"

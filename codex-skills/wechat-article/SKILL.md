@@ -48,7 +48,7 @@ This skill is generated from `skills/wechat-article.md` so Claude Code and Codex
 
 ### 第二步：深度研究
 
-使用 Agent 工具**并行**启动2-3个研究Agent，收集足够的素材：
+**并行**启动2-3个研究子任务，收集足够的素材：
 
 **研究Agent A：核心内容研究**
 - 如果是论文解读：下载论文PDF、提取核心贡献、关键图表、实验结果
@@ -77,7 +77,7 @@ This skill is generated from `skills/wechat-article.md` so Claude Code and Codex
 
 ## 阶段二：作者Agent写初稿
 
-使用 Agent 工具启动**作者Agent**，给出详细的写作指令。
+启动**作者子任务**，给出详细的写作指令。
 
 ### 作者Agent的Prompt模板
 
@@ -129,7 +129,7 @@ This skill is generated from `skills/wechat-article.md` so Claude Code and Codex
 
 ## 阶段三：编辑Agent + 读者Agent并行审阅
 
-初稿完成后，使用 Agent 工具在**同一条消息**中启动编辑Agent和读者Agent。
+初稿完成后，在**同一次调用**中并行启动编辑子任务和读者子任务。
 
 ### 编辑Agent的Prompt模板
 
