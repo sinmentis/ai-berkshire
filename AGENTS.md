@@ -1,7 +1,8 @@
 # AI Berkshire Codex Guide
 
 This repository contains investment research workflows, reports, and shared
-validation tools. Keep compatibility with both Claude Code and Codex users.
+validation tools. Keep compatibility with Claude Code, Codex, and GitHub
+Copilot CLI users.
 
 ## Project Layout
 
@@ -39,8 +40,8 @@ validation tools. Keep compatibility with both Claude Code and Codex users.
 - For Codex-only hand-written packages under `codex-skills/`, keep them clearly
   marked as Codex-only and do not create a same-named `skills/*.md` file unless
   intentionally adopting the workflow for Claude Code too.
-- Keep tool paths compatible with the documented checkout path:
-  `~/ai-berkshire/tools/...`
+- Keep tool paths relative to the repository root (e.g. `tools/...`); do not
+  assume a fixed checkout location like `~/ai-berkshire/`.
 - Keep `CLAUDE.md` for Claude Code behavior, this `AGENTS.md` for Codex
   behavior, and `COPILOT.md` for GitHub Copilot CLI behavior.
 

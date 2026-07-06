@@ -100,7 +100,7 @@ This skill is generated from `skills/investment-team.md` so Claude Code and Code
   7. 长期确定性：10年后公司会怎样？什么可能颠覆其商业模式？
   8. 要求搜索最新监管动态、管理层言论等
 
-### 第四步：并行启动4个独立研究子任务
+### 第三步：并行启动4个独立研究子任务
 
 在**同一次调用中一次性并行派发全部4个**后台研究子任务，不要逐个串行执行。4个子任务角色：business-analyst / financial-analyst / industry-researcher / risk-assessor，各自独立研究、互不感知，完成后把结果直接返回给你（team-lead）——没有中间消息系统。
 
@@ -128,17 +128,17 @@ This skill is generated from `skills/investment-team.md` so Claude Code and Code
 **完成后**：直接将完整分析报告作为本次任务的最终结果返回，不需要额外的通知或消息步骤。
 ```
 
-### 第五步：接收报告并跟踪进度
+### 第四步：接收报告并跟踪进度
 
-- 向用户实时展示进度表（哪些Agent已完成、哪些仍在研究中）
+- 向用户实时展示进度表（哪些子任务已完成、哪些仍在研究中）
 - 每收到一份报告，更新进度并展示该报告的核心要点（3-5条）
 - 等待全部4份报告到齐
 
-### 第六步：确认全部子任务已完成
+### 第五步：确认全部子任务已完成
 
 4个子任务在各自返回结果后即已结束，无需额外的关闭或通知操作。
 
-### 第七步：汇总最终报告
+### 第六步：汇总最终报告
 
 综合4份分析报告，输出以下结构的最终报告：
 
@@ -177,11 +177,11 @@ This skill is generated from `skills/investment-team.md` so Claude Code and Code
 
 ---
 
-### 第八步：保存报告
+### 第七步：保存报告
 
 将完整最终报告写入 `~/{公司名}投资研究报告_{日期}.md`（日期格式 YYYYMMDD）。
 
-### 第九步：数据抽检（准出流程）
+### 第八步：数据抽检（准出流程）
 
 ```bash
 # Step 1 — 提取抽检清单（15%随机抽样）
