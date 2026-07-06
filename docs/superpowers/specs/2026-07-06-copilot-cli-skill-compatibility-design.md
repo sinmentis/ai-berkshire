@@ -39,7 +39,7 @@ design adopts.
 
 ## Goals
 
-- Rewrite `skills/*.md` (all 20 files) so the procedural/orchestration text
+- Rewrite `skills/*.md` (all 19 files) so the procedural/orchestration text
   uses agent-neutral action language instead of Claude Code tool names.
 - Preserve all domain content unchanged: the four-masters methodology,
   checklists, scoring rubrics, report structure/sections, and all
@@ -69,7 +69,9 @@ design adopts.
 
 ## Transformation rules
 
-Applied uniformly across all 20 `skills/*.md` files. Anything not listed
+Applied uniformly across all 19 `skills/*.md` files (`codex-skills/` has a
+20th package, `investment-memo-craft`, which is a hand-written Codex-only
+addition with no `skills/*.md` source and is out of scope here). Anything not listed
 stays as-is.
 
 | Claude-Code-specific text | Replace with |
